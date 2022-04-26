@@ -11,12 +11,12 @@ import (
 )
 
 func main() {
-	config, err := config.FromFile("./configuration.json")
+	conf, err := config.FromFile("./configuration.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	service, err := redis.New(config.Redis.Host, config.Redis.Port, config.Redis.Password)
+	service, err := redis.New(conf.Redis.Host, conf.Redis.Port, conf.Redis.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,10 +29,10 @@ func main() {
 
 	//gin.SetMode(setting.ServerSetting.RunMode)
 
-	routersInit := handler.New(config.Options.Schema, config.Options.Prefix, service)
-	readTimeout := config.Server.ReadTimeout
-	writeTimeout := config.Server.WriteTimeout
-	endPoint := fmt.Sprintf(":%d", config.Server.Port)
+	routersInit := handler.New(conf.Options.Schema, conf.Options.Prefix, service)
+	readTimeout := conf.Server.ReadTimeout
+	writeTimeout := conf.Server.WriteTimeout
+	endPoint := fmt.Sprintf(":%d", conf.Server.Port)
 	maxHeaderBytes := 1 << 20
 
 	server := &http.Server{
@@ -45,7 +45,11 @@ func main() {
 
 	log.Printf("[info] start http server listening %s", endPoint)
 
-	server.ListenAndServe()
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatal("http server startup err", err)
+		}
+	}()
 
 	//router.Run(":"+configuration.Server.Port, router.Handler)
 
