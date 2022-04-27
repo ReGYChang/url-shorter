@@ -11,12 +11,12 @@ import (
 )
 
 func main() {
-	conf, err := config.FromFile("./configuration.json")
+	cfg, err := config.FromFile("./configuration.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	service, err := redis.New(conf.Redis.Host, conf.Redis.Port, conf.Redis.Password)
+	service, err := redis.New(cfg.Redis.Host, cfg.Redis.Port, cfg.Redis.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,10 +29,10 @@ func main() {
 
 	//gin.SetMode(setting.ServerSetting.RunMode)
 
-	routersInit := handler.New(conf.Options.Schema, conf.Options.Prefix, service)
-	readTimeout := conf.Server.ReadTimeout
-	writeTimeout := conf.Server.WriteTimeout
-	endPoint := fmt.Sprintf(":%d", conf.Server.Port)
+	routersInit := handler.New(cfg.Options.Schema, cfg.Options.Prefix, service)
+	readTimeout := cfg.Server.ReadTimeout
+	writeTimeout := cfg.Server.WriteTimeout
+	endPoint := fmt.Sprintf(":%d", cfg.Server.Port)
 	maxHeaderBytes := 1 << 20
 
 	server := &http.Server{
