@@ -61,7 +61,7 @@ func (h handler) encode(ctx *gin.Context) (interface{}, int, error) {
 	//	Expires string `json:"expires"`
 	//}
 	input := input{}
-	err := ctx.BindJSON(input)
+	err := ctx.BindJSON(&input)
 	if err != nil {
 		return nil, http.StatusBadRequest, fmt.Errorf("Unable to decode JSON request body: %v", err)
 	}
@@ -76,7 +76,7 @@ func (h handler) encode(ctx *gin.Context) (interface{}, int, error) {
 		return nil, http.StatusBadRequest, fmt.Errorf("Invalid url")
 	}
 
-	layoutISO := "2006-01-02 15:04:05"
+	layoutISO := "2022-04-22 22:22:22"
 	expires, err := time.Parse(layoutISO, input.Expires)
 	if err != nil {
 		return nil, http.StatusBadRequest, fmt.Errorf("Invalid expiration date")
@@ -90,7 +90,8 @@ func (h handler) encode(ctx *gin.Context) (interface{}, int, error) {
 	u := url.URL{
 		Scheme: h.schema,
 		Host:   h.host,
-		Path:   c}
+		Path:   c,
+	}
 
 	fmt.Printf("Generated link: %v \n", u.String())
 
