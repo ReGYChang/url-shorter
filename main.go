@@ -27,8 +27,6 @@ func main() {
 		}
 	}(service)
 
-	//gin.SetMode(setting.ServerSetting.RunMode)
-
 	routersInit := handler.New(cfg.Options.Schema, cfg.Options.Prefix, service)
 	readTimeout := cfg.Server.ReadTimeout
 	writeTimeout := cfg.Server.WriteTimeout
@@ -45,22 +43,7 @@ func main() {
 
 	log.Printf("[info] start http server listening %s", endPoint)
 
-	//go func() {
-	//	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-	//		log.Fatal("http server startup err", err)
-	//	}
-	//}()
-
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatal("http server startup err", err)
 	}
-
-	//router.Run(":"+configuration.Server.Port, router.Handler)
-
-	//r := gin.Default()
-	//
-	//r.POST("/", storage.Save)
-	//r.GET("/:hash", storage.Visit)
-	//
-	//r.Run(":9099")
 }

@@ -18,7 +18,7 @@ func New(schema string, host string, storage storage.Service) *gin.Engine {
 	h := handler{schema, host, storage}
 	r.POST("/encode", responseHandler(h.encode))
 	r.GET("/:shortLink", h.redirect)
-	r.GET("/:shortLink/info", responseHandler(h.decode))
+	r.GET("/info/:shortLink", responseHandler(h.decode))
 
 	return r
 }
@@ -45,10 +45,7 @@ func responseHandler(h func(ctx *gin.Context) (interface{}, int, error)) gin.Han
 		if err != nil {
 			data = err.Error()
 		}
-		//ctx.Writer.Header().Set("Content-Type", "application/json")
-		//ctx.Response.SetStatusCode(status)
 		ctx.JSON(status, response{Data: data, Success: err == nil})
-		//err = json.NewEncoder(ctx.Response.BodyWriter()).Encode(response{Data: data, Success: err == nil})
 		if err != nil {
 			log.Printf("could not encode response to output: %v", err)
 		}
@@ -56,19 +53,11 @@ func responseHandler(h func(ctx *gin.Context) (interface{}, int, error)) gin.Han
 }
 
 func (h handler) encode(ctx *gin.Context) (interface{}, int, error) {
-	//var input struct {
-	//	URL     string `json:"url"`
-	//	Expires string `json:"expires"`
-	//}
 	input := input{}
 	err := ctx.BindJSON(&input)
 	if err != nil {
 		return nil, http.StatusBadRequest, fmt.Errorf("Unable to decode JSON request body: %v", err)
 	}
-
-	//if err := json.Unmarshal(ctx.PostBody(), &input); err != nil {
-	//	return nil, http.StatusBadRequest, fmt.Errorf("Unable to decode JSON request body: %v", err)
-	//}
 
 	uri, err := url.ParseRequestURI(input.URL)
 
@@ -76,7 +65,7 @@ func (h handler) encode(ctx *gin.Context) (interface{}, int, error) {
 		return nil, http.StatusBadRequest, fmt.Errorf("Invalid url")
 	}
 
-	layoutISO := "2022-04-22 22:22:22"
+	layoutISO := "2006-01-02 15:04:05"
 	expires, err := time.Parse(layoutISO, input.Expires)
 	if err != nil {
 		return nil, http.StatusBadRequest, fmt.Errorf("Invalid expiration date")
