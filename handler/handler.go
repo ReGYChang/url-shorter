@@ -104,7 +104,7 @@ func (h handler) redirect(ctx *gin.Context) {
 	uri, err := h.storage.Load(code)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
-			"status":  "JSON_ERROR",
+			"status":  "ERROR",
 			"message": "Data Not found",
 		})
 	}

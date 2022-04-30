@@ -7,6 +7,7 @@
     <list default="true" id="c7978a78-bcc3-492e-977a-a09489ddadce" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/redis/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/storage/redis/redis.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

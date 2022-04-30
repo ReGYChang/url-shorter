@@ -60,6 +60,7 @@ func (r *redis) Save(url string, expires time.Time) (string, error) {
 
 	return base62.Encode(id), nil
 }
+
 func (r *redis) Load(code string) (string, error) {
 	conn := r.pool.Get()
 	defer conn.Close()
