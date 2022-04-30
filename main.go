@@ -27,7 +27,7 @@ func main() {
 		}
 	}(service)
 
-	routersInit := handler.New(cfg.Options.Schema, cfg.Options.Prefix, service)
+	handlerInit := handler.New(cfg.Options.Schema, cfg.Options.Prefix, service)
 	readTimeout := cfg.Server.ReadTimeout
 	writeTimeout := cfg.Server.WriteTimeout
 	endPoint := fmt.Sprintf(":%s", cfg.Server.Port)
@@ -35,7 +35,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:           endPoint,
-		Handler:        routersInit,
+		Handler:        handlerInit,
 		ReadTimeout:    readTimeout,
 		WriteTimeout:   writeTimeout,
 		MaxHeaderBytes: maxHeaderBytes,
